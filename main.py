@@ -1,20 +1,52 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Response
+from ProductModel import Product,ProductData
+from bson import ObjectId
+from cruds import root,create_Product,getProducts,getById,deleteById,updateProduct,softDeleteById
 
-#creaate a fastapi application
+
 app=FastAPI()
 
-#define a route at the root/endpoint web address("/")
-#@app.get("/")
-@app.get("/qqqa")
-def read_root():
-    return {
-        "message: Hello FastApi!"
-    }
+@app.get('/heartbeat')
+async def fun1(response: Response):
+    return await root({response: Response})
+
+
+@app.post('/products')
+async def fun2(product: Product,response:Response):
+    return await create_Product(product,response)
+        
+@app.get('/getProducts')
+async def func3(response: Response):
+    return await getProducts(response)
     
-    from fastapi import FastAPI
+
+@app.get('/getById/{product_id}')
+async def func4(product_id: str,response:Response):
+    return await getById(product_id,response)
+
+        
+@app.delete('/deleteById/{product_id}')
+async def func5(product_id:str,response:Response):
+    return await deleteById(product_id,response)
+        
+    
+@app.put('/updateProduct/{product_id}')
+async def func6(product_id:str,product:Product,response:Response):
+    return await updateProduct(product_id,product,response)
+        
+@app.put('/softDeleteById/{product_id}')
+async def func7(product_id: str,response:Response):
+    return await softDeleteById(product_id,response)
 
 
+    
+    
+    
 
-#http://127.0.0.1:8000  (web ip address)        http-protocol, 127.0.0.1-ip address, 8000-port number
-#uvicorn main:app --reload  (to execute)
-#pip insstall uvicorn rn fastapi pydantic motor
+        
+
+       
+        
+        
+        
+        
